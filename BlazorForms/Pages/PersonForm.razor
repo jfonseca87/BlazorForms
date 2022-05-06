@@ -1,0 +1,112 @@
+﻿@page "/people/person"
+@page "/people/person/{Id:int}"
+
+@inject IPersonService personSvc
+@inject NavigationManager navManager
+
+<h3>Person</h3>
+
+<EditForm Model="_person" OnValidSubmit="Save">
+    <DataAnnotationsValidator />
+    <div class="form-container">
+        <div class="form-custom-row">
+            <div class="form-custom-control middle-size">
+                <label>FirstName: </label>
+                <input type="text" @bind="_person.FirstName" />
+                <ValidationMessage For=@(() => _person.FirstName) />
+            </div>
+            <div class="form-custom-control middle-size">
+                <label>LastName: </label>
+                <input type="text" @bind="_person.LastName" />
+                <ValidationMessage For=@(() => _person.LastName) />
+            </div>
+        </div>
+        <div class="form-custom-row">
+            <div class="form-custom-control middle-size">
+                <label>Email: </label>
+                <input type="text" @bind="_person.Email" />
+                <ValidationMessage For=@(() => _person.Email) />
+            </div>
+            <div class="form-custom-control middle-size">
+                <label>Phone Number: </label>
+                <input type="text" @bind="_person.PhoneNumber"/>
+            </div>
+        </div>
+        <div class="form-custom-row">
+            <div class="form-custom-control middle-size">
+                <label>Birthdate: </label>
+                <input type="date" @bind="_person.Birthdate" />
+                <ValidationMessage For=@(() => _person.Birthdate) />
+            </div>
+            <div class="form-custom-control middle-size">
+                <label>Active</label>
+                <input type="checkbox" @bind="_person.IsActive" />
+            </div>
+        </div>
+        <div class="form-custom-row">
+            <div class="form-custom-control full-size">
+                <label>Comments: </label>
+                <textarea rows="5" class="full-size" @bind="_person.Comments" @bind:event="oninput"></textarea>
+            </div>
+        </div>
+        <div class="form-survey">
+            <div class="full-size">
+                <label>Do you have experience with programing?</label>
+                <input type="radio" name="experience" @bind="_person.WorkingExperience" /> Yes
+                <input type="radio" name="experience" @bind="_person.WorkingExperience" /> No
+            </div>
+            <div class="form-custom-control middle-size">
+                <label>Seniority Level: </label>
+                <select @bind="_person.LevelSeniority">
+                    <option value=0>Select...</option>
+                    <option value=1 >Less than 1 year</option>
+                    <option value=2>2 years</option>
+                    <option value=3>5 years</option>
+                    <option value=4>More than 5 years</option>
+                </select>
+            </div>
+            <div class="full-size">
+                <label>Are you agree with living abroad?</label>
+                <input type="radio" name="abroad" @bind="_person.WorkingAbroad" /> Yes
+                <input type="radio" name="abroad" @bind="_person.WorkingAbroad" /> No
+            </div>
+        </div>
+        <div class="form-custom-row form-buttons">
+            <button type="submit">Save</button>
+            <button type="button" @onclick="Cancel">Cancel</button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+    private Person _person = new Person();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _person.Birthdate = DateTime.Now;
+        if (Id.HasValue)
+        {
+            _person = (await personSvc.GetPersonById(Id.Value)).Data;
+        }
+    }
+
+    private void Save()
+    {
+        Console.WriteLine(JsonConvert.SerializeObject(_person));
+        //ApiResponse<bool> result = Id.HasValue
+        //        ? await personSvc.UpdatePerson(_person)
+        //        : await personSvc.AddNewPerson(_person);
+
+        //if (result.Status == ResponseStatus.Success)
+        //{
+        //    navManager.NavigateTo("/people/person");
+        //}
+    }
+
+    private void Cancel()
+    {
+        navManager.NavigateTo("/people");
+    }
+}

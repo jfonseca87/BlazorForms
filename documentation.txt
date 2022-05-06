@@ -1,0 +1,2 @@
+https://code-maze.com/blazor-webassembly-forms-form-validation/
+https://www.pragimtech.com/blog/blazor/what-is-blazor/

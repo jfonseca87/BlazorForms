@@ -1,0 +1,58 @@
+﻿@page "/people"
+
+@inject IPersonService personSvc
+@inject NavigationManager navManager
+
+@if (_people == null)
+{
+    <h3>Loading people....</h3>
+}
+else
+{
+    <h3>People</h3>
+
+    <div>
+        <button @onclick=@(() => navManager.NavigateTo("people/person"))>Add Person</button>
+    </div>
+
+    <table class="table table-bordered table-active">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Active</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var person in _people)
+            {
+                <tr>
+                    <td>@person.FirstName @person.LastName</td>
+                    <td>@person.Email</td>
+                    <td>@person.PhoneNumber</td>
+                    <td>@( person.IsActive ? "Active" : "Inactive" ) </td>
+                    <td>
+                        <button @onclick=@(() => navManager.NavigateTo($"people/person/{person.Id}"))>Edit</button>
+                        <button>Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Person> _people = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _people  = (await personSvc.GetPeople()).Data;
+    }
+
+    private async Task OnDelete(int id)
+    {
+        await personSvc.DeletePerson(id);
+        _people = _people.Where(p => p.Id != id).ToList();
+    }
+}
