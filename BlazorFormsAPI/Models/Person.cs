@@ -12,8 +12,8 @@ namespace BlazorFormsAPI.Models
         public DateTime Birthdate { get; set; }
         public bool IsActive { get; set; }
         public string Comments { get; set; }
-        public bool WorkingExperience { get; set; }
-        public bool WorkingAbroad { get; set; }
+        public int WorkingExperience { get; set; }
+        public int WorkingAbroad { get; set; }
         public int SeniorityLevel { get; set; }
     }
 }

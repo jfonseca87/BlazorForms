@@ -7,6 +7,16 @@
 {
     <h3>Loading people....</h3>
 }
+else if (_people.Count == 0)
+{
+    <h3>People</h3>
+
+    <div>
+        <button @onclick=@(() => navManager.NavigateTo("people/person"))>Add Person</button>
+    </div>
+
+    <h3>There are no records!!!</h3>    
+}
 else
 {
     <h3>People</h3>
@@ -34,7 +44,7 @@ else
                     <td>@( person.IsActive ? "Active" : "Inactive" ) </td>
                     <td>
                         <button @onclick=@(() => navManager.NavigateTo($"people/person/{person.Id}"))>Edit</button>
-                        <button>Delete</button>
+                        <button @onclick=@(() => OnDelete(person.Id))>Delete</button>
                     </td>
                 </tr>
             }
@@ -52,7 +62,10 @@ else
 
     private async Task OnDelete(int id)
     {
-        await personSvc.DeletePerson(id);
-        _people = _people.Where(p => p.Id != id).ToList();
+        var result = await personSvc.DeletePerson(id);
+        if (result.Status == ResponseStatus.Success)
+        {
+            _people = _people.Where(p => p.Id != id).ToList();
+        }
     }
 }

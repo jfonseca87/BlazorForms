@@ -85,7 +85,7 @@ namespace BlazorFormsAPI.Controllers
             }
         }
 
-        [HttpDelete("people")]
+        [HttpDelete("people/{personId:int}")]
         public async Task<IActionResult> DeletePerson(int personId)
         {
             try

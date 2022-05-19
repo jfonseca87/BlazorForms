@@ -8,8 +8,8 @@ CREATE TABLE `person` (
   `Birthdate` datetime DEFAULT NULL,
   `IsActive` bit(1) DEFAULT NULL,
   `Comments` varchar(5000) DEFAULT NULL,
-  `WorkingExperience` bit(1) DEFAULT NULL,
-  `WorkingAbroad` bit(1) DEFAULT NULL,
+  `WorkingExperience` int DEFAULT NULL,
+  `WorkingAbroad` int DEFAULT NULL,
   `SeniorityLevel` int DEFAULT NULL,
   PRIMARY KEY (`Id`)
 );

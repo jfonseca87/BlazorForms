@@ -31,9 +31,9 @@ namespace BlazorFormsAPI.Repositories
         {
             using var conn = new MySqlConnection(_connString);
             int newId = await conn.ExecuteScalarAsync<int>(@$"insert into person 
-                                           (FirstName, LastName, Email, PhoneNumber, Birthdate, IsActive, Comments, WorkingExperience, WorkingAbroad)
+                                           (FirstName, LastName, Email, PhoneNumber, Birthdate, IsActive, Comments, WorkingExperience, WorkingAbroad, SeniorityLevel)
                                            values ('{person.FirstName}', '{person.LastName}', '{person.Email}', '{person.PhoneNumber}', '{person.Birthdate:yyyy-MM-dd}', 
-                                           {person.IsActive}, '{person.Comments}', {person.WorkingExperience}, {person.WorkingAbroad});
+                                           {person.IsActive}, '{person.Comments}', {person.WorkingExperience}, {person.WorkingAbroad}, {person.SeniorityLevel});
                                            select last_insert_id();");
 
             return newId > 0;
@@ -44,8 +44,9 @@ namespace BlazorFormsAPI.Repositories
             using var conn = new MySqlConnection(_connString);
             int rowsAffected = await conn.ExecuteAsync(@$"update person set
                                            FirstName = '{person.FirstName}', LastName = '{person.LastName}', Email = '{person.Email}', 
-                                           PhoneNumber = '{person.PhoneNumber}', Birthdate = '{person.Birthdate:yyyy-MM-dd}', IsActive = {person.IsActive}, Comments = '{person.Comments}', WorkingExperience = {person.WorkingExperience}, WorkingAbroad = {person.WorkingAbroad}
-                                           where id = {person.Id}");
+                                           PhoneNumber = '{person.PhoneNumber}', Birthdate = '{person.Birthdate:yyyy-MM-dd}', IsActive = {person.IsActive}, 
+                                           Comments = '{person.Comments}', WorkingExperience = {person.WorkingExperience}, WorkingAbroad = {person.WorkingAbroad}, SeniorityLevel = {person.SeniorityLevel}
+                                           where Id = {person.Id};");
             return rowsAffected > 0;
         }
 
