@@ -1,8 +1,11 @@
 ﻿using BlazorFormsAPI.Models;
 using BlazorFormsAPI.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BlazorFormsAPI.Controllers
@@ -14,13 +17,16 @@ namespace BlazorFormsAPI.Controllers
         private readonly IPersonRepository _personRepository;
         private readonly ILogger<PersonController> _logger;
 
-        public PersonController(IPersonRepository personRepository, ILogger<PersonController> logger)
+        public PersonController(
+            IPersonRepository personRepository, 
+            ILogger<PersonController> logger)
         {
             _personRepository = personRepository;
             _logger = logger;
         }
 
         [HttpGet("people")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator,User")]
         public async Task<IActionResult> GetPeople()
         {
             try
@@ -36,6 +42,7 @@ namespace BlazorFormsAPI.Controllers
         }
 
         [HttpGet("people/{id:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator,User")]
         public async Task<IActionResult> GetPersonById(int id)
         {
             if (!ModelState.IsValid) 
@@ -56,6 +63,7 @@ namespace BlazorFormsAPI.Controllers
         }
 
         [HttpPost("people")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<IActionResult> AddPerson(Person person)
         {
             try
@@ -71,6 +79,7 @@ namespace BlazorFormsAPI.Controllers
         }
 
         [HttpPut("people")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<IActionResult> UpdatePerson(Person person)
         {
             try
@@ -86,6 +95,7 @@ namespace BlazorFormsAPI.Controllers
         }
 
         [HttpDelete("people/{personId:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<IActionResult> DeletePerson(int personId)
         {
             try

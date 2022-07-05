@@ -1,6 +1,7 @@
 ﻿@page "/people"
 
 @inject IPersonService personSvc
+@inject IToastService toastSvc
 @inject NavigationManager navManager
 
 @if (_people == null)
@@ -65,6 +66,7 @@ else
         var result = await personSvc.DeletePerson(id);
         if (result.Status == ResponseStatus.Success)
         {
+            toastSvc.ShowSuccess("Person deleted successfully.");
             _people = _people.Where(p => p.Id != id).ToList();
         }
     }

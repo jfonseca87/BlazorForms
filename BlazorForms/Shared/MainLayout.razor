@@ -1,5 +1,9 @@
 ﻿@inherits LayoutComponentBase
 
+@inject IAccountService accountSvc
+@inject ILocalStorageService localStorageSvc
+
+
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -7,11 +11,35 @@
 
     <div class="main">
         <div class="top-row px-4">
-            <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+            @_email
         </div>
 
         <div class="content px-4">
             @Body
+
+            <BlazoredToasts Position="ToastPosition.BottomRight"
+                            Timeout="10"
+                            ShowProgressBar="true" />
         </div>
     </div>
 </div>
+
+@code {
+    private string _email;
+
+    protected async override Task OnInitializedAsync()
+    {
+        ApiResponse<User> result = await accountSvc.ValidateUser();
+        if (result.Status == ResponseStatus.Success)
+        {
+            await localStorageSvc.SetValue("token", result.Data.Token);
+            _email = result.Data.Email;
+
+        }
+    }
+
+    public async Task Dispose()
+    {
+        await localStorageSvc.Clear();     
+    }
+}

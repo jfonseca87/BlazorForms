@@ -5,7 +5,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System;
+using System.Text;
 
 namespace BlazorFormsAPI
 {
@@ -25,17 +28,37 @@ namespace BlazorFormsAPI
                 conf => conf.RegisterValidatorsFromAssemblyContaining<Startup>()
             );
 
+            services
+                .AddAuthentication()
+                .AddNegotiate()
+                .AddJwtBearer(options =>
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = "BlazorForms",
+                        ValidateAudience = true,
+                        ValidAudience = "BlazorForms",
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtKey"])),
+                        ClockSkew = TimeSpan.Zero
+                    }
+                );
+
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BlazorFormsAPI", Version = "v1" });
             });
 
+            services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<IPersonRepository, PersonRepository>();
 
             services.AddCors(conf => conf.AddPolicy("test", settings => 
                 settings.AllowAnyMethod()
                         .AllowAnyHeader()
-                        .AllowAnyOrigin()
+                        .WithOrigins("http://localhost:5010")
+                        .AllowCredentials()
             ));
         }
 
@@ -53,6 +76,7 @@ namespace BlazorFormsAPI
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

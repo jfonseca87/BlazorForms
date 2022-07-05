@@ -2,6 +2,7 @@
 @page "/people/person/{Id:int}"
 
 @inject IPersonService personSvc
+@inject IToastService toastSvc
 @inject NavigationManager navManager
 
 <h3>Person</h3>
@@ -124,6 +125,11 @@
 
         if (result.Status == ResponseStatus.Success)
         {
+            string message = Id.HasValue
+                ? "Person updated successfully."
+                : "Person added successfully.";
+            toastSvc.ShowSuccess(message);
+                
             navManager.NavigateTo("/people");
         }
     }

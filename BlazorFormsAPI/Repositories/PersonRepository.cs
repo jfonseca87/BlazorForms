@@ -1,5 +1,6 @@
 ﻿using BlazorFormsAPI.Models;
 using Dapper;
+using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,26 +11,29 @@ namespace BlazorFormsAPI.Repositories
     {
         private readonly string _connString;
 
-        public PersonRepository()
+        public PersonRepository(IConfiguration configuration)
         {
-            _connString = "Server=localhost;Port=3306;Database=Test;Uid=root;Pwd=Abc.123456;";
+            _connString = configuration["ConnectionStrings:MySqlConn"];
         }
 
         public async Task<IEnumerable<Person>> GetPeople()
         {
             using var conn = new MySqlConnection(_connString);
+            await conn.OpenAsync();
             return await conn.QueryAsync<Person>("select * from person");
         }
 
         public async Task<Person> GetPersonById(int id)
         {
             using var conn = new MySqlConnection(_connString);
+            await conn.OpenAsync();
             return await conn.QuerySingleAsync<Person>($"select * from person where Id = {id}");
         }
 
         public async Task<bool> AddPerson(Person person)
         {
             using var conn = new MySqlConnection(_connString);
+            await conn.OpenAsync();
             int newId = await conn.ExecuteScalarAsync<int>(@$"insert into person 
                                            (FirstName, LastName, Email, PhoneNumber, Birthdate, IsActive, Comments, WorkingExperience, WorkingAbroad, SeniorityLevel)
                                            values ('{person.FirstName}', '{person.LastName}', '{person.Email}', '{person.PhoneNumber}', '{person.Birthdate:yyyy-MM-dd}', 
@@ -42,6 +46,7 @@ namespace BlazorFormsAPI.Repositories
         public async Task<bool> UpdatePerson(Person person)
         {
             using var conn = new MySqlConnection(_connString);
+            await conn.OpenAsync();
             int rowsAffected = await conn.ExecuteAsync(@$"update person set
                                            FirstName = '{person.FirstName}', LastName = '{person.LastName}', Email = '{person.Email}', 
                                            PhoneNumber = '{person.PhoneNumber}', Birthdate = '{person.Birthdate:yyyy-MM-dd}', IsActive = {person.IsActive}, 
@@ -53,6 +58,7 @@ namespace BlazorFormsAPI.Repositories
         public async Task<bool> DeletePerson(int id)
         {
             using var conn = new MySqlConnection(_connString);
+            await conn.OpenAsync();
             int rowsAffected = await conn.ExecuteAsync($"delete from person where id = {id}");
             return rowsAffected > 0;
         }

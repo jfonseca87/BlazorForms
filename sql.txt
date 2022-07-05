@@ -13,3 +13,17 @@ CREATE TABLE `person` (
   `SeniorityLevel` int DEFAULT NULL,
   PRIMARY KEY (`Id`)
 );
+CREATE TABLE `user` (
+	`Id` int PRIMARY KEY AUTO_INCREMENT,
+	`Name` varchar(100),
+	`Email` varchar(200),
+	`Rol` varchar(20),
+	`Active` bit
+);
+INSERT INTO `user` 
+(Name, Email, Rol, Active)
+values (
+	'LAPTOP-NGGK5LRF\\jorge', 
+	'jorge@domain.com',
+	'Administrator',
+	1);

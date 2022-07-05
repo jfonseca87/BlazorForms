@@ -17,7 +17,13 @@ namespace BlazorForms.Extensions
             List<string> errors = null;
 
             var statusCode = (int)response.StatusCode;
-            var result = await response.Content.ReadAsStringAsync();
+            string result = null;
+
+            if (statusCode != 401 && statusCode != 403)
+            {
+                result = await response.Content.ReadAsStringAsync();
+            }
+
             switch (statusCode)
             {
                 case 200:
@@ -28,6 +34,57 @@ namespace BlazorForms.Extensions
                 case 400:
                     status = ResponseStatus.Error;
                     errors = ProcessResponse400(result);
+                    break;
+                case 401:
+                    status = ResponseStatus.Unauthorized;
+                    errors = ProcessResponse401();
+                    break;
+                case 403:
+                    status = ResponseStatus.Forbidden;
+                    errors = ProcessResponse403();
+                    break;
+                case 500:
+                    status = ResponseStatus.Error;
+                    errors = ProcessResponse500(result);
+                    break;
+                default:
+                    break;
+            }
+
+            return (status, data, errors);
+        }
+
+        public static (ResponseStatus status, string data, List<string> errors) ToClientResponseV2(this HttpResponseMessage response)
+        {
+            ResponseStatus status = ResponseStatus.Success;
+            string data = null;
+            List<string> errors = null;
+
+            var statusCode = (int)response.StatusCode;
+            string result = null;
+            if (statusCode != 401 && statusCode != 403)
+            {
+                result = response.Content.ReadAsStringAsync().Result;
+            }
+            
+            switch (statusCode)
+            {
+                case 200:
+                case 201:
+                    status = ResponseStatus.Success;
+                    data = result;
+                    break;
+                case 400:
+                    status = ResponseStatus.Error;
+                    errors = ProcessResponse400(result);
+                    break;
+                case 401:
+                    status = ResponseStatus.Unauthorized;
+                    errors = ProcessResponse401();
+                    break;
+                case 403:
+                    status = ResponseStatus.Forbidden;
+                    errors = ProcessResponse403();
                     break;
                 case 500:
                     status = ResponseStatus.Error;
@@ -61,6 +118,16 @@ namespace BlazorForms.Extensions
             }
 
             return errors;
+        }
+
+        private static List<string> ProcessResponse401()
+        {
+            return new List<string> { "User is not Authorized" };
+        }
+
+        private static List<string> ProcessResponse403()
+        {
+            return new List<string> { "User does not permision to perform this action" };
         }
 
         private static List<string> ProcessResponse500(string result)
