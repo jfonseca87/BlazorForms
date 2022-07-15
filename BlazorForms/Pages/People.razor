@@ -4,6 +4,9 @@
 @inject IToastService toastSvc
 @inject NavigationManager navManager
 
+@attribute [Authorize]
+
+
 @if (_people == null)
 {
     <h3>Loading people....</h3>

@@ -1,5 +1,7 @@
 using Blazored.Toast;
+using BlazorForms.Auth;
 using BlazorForms.Services;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -19,6 +21,9 @@ namespace BlazorForms
             builder.Services.AddSingleton<ILocalStorageService, LocalStorageService>();
             builder.Services.AddTransient<IAccountService, AccountService>();
             builder.Services.AddTransient<IPersonService, PersonService>();
+
+            builder.Services.AddAuthorizationCore();
+            builder.Services.AddScoped<AuthenticationStateProvider, FakeAuthStateProvider>();
 
             builder.Services.AddBlazoredToast();
 
