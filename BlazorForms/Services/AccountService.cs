@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace BlazorForms.Services
@@ -15,11 +16,13 @@ namespace BlazorForms.Services
     {
         private readonly HttpClient _httpClient;
         private readonly IToastService _toastService;
+        private readonly ILocalStorageService _localStorageService;
 
-        public AccountService(HttpClient httpClient, IToastService toastService)
+        public AccountService(HttpClient httpClient, IToastService toastService, ILocalStorageService localStorageService)
         {
             _httpClient = httpClient;
             _toastService = toastService;
+            _localStorageService = localStorageService;
         }
 
         public async Task<ApiResponse<User>> ValidateUser()
@@ -42,6 +45,7 @@ namespace BlazorForms.Services
             {
                 _toastService.ShowError(errors.FirstOrDefault());
             }
+
 
             return new ApiResponse<User>
             {

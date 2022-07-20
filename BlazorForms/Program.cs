@@ -16,14 +16,14 @@ namespace BlazorForms
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
-
+            Console.WriteLine("Entro primero aqui en program.cs");
             builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5000") });
             builder.Services.AddSingleton<ILocalStorageService, LocalStorageService>();
             builder.Services.AddTransient<IAccountService, AccountService>();
             builder.Services.AddTransient<IPersonService, PersonService>();
 
             builder.Services.AddAuthorizationCore();
-            builder.Services.AddScoped<AuthenticationStateProvider, FakeAuthStateProvider>();
+            builder.Services.AddScoped<AuthenticationStateProvider, JWTAuthStateProvider>();
 
             builder.Services.AddBlazoredToast();
 

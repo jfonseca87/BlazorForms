@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@using System.Security.Claims
+@inherits LayoutComponentBase
 
 @inject IAccountService accountSvc
 @inject ILocalStorageService localStorageSvc
@@ -27,18 +28,25 @@
 </div>
 
 @code {
+    [CascadingParameter]
+    private Task<AuthenticationState> _authenticationState { get; set; }
     private string _email;
 
     protected async override Task OnInitializedAsync()
     {
-        Console.WriteLine("MainLayout component called first!");
-        ApiResponse<User> result = await accountSvc.ValidateUser();
-        if (result.Status == ResponseStatus.Success)
+        var user = (await _authenticationState).User;
+        if (user.Identity.IsAuthenticated)
         {
-            await localStorageSvc.SetValue("token", result.Data.Token);
-            _email = result.Data.Email;
-
+            _email = user.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email).Value;
         }
+        //Console.WriteLine("MainLayout component called first!");
+        //ApiResponse<User> result = await accountSvc.ValidateUser();
+        //if (result.Status == ResponseStatus.Success)
+        //{
+        //    await localStorageSvc.SetValue("token", result.Data.Token);
+        //    _email = result.Data.Email;
+
+        //}
     }
 
     public void Dispose()
