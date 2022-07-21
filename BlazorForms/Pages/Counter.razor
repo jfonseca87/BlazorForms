@@ -1,6 +1,8 @@
 ﻿@page "/counter"
 @attribute [Authorize]
 
+@inject ILogger<Counter> logger;
+
 <h1>Counter</h1>
 
 <p>Current count: @currentCount</p>
@@ -28,6 +30,7 @@
 
     private async void IncrementCount()
     {
+        logger.LogInformation("Calling IncrementCount function");
         var authState = await authenticationState;
         var user = authState.User;
 

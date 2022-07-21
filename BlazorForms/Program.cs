@@ -4,6 +4,7 @@ using BlazorForms.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -16,8 +17,9 @@ namespace BlazorForms
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
-            Console.WriteLine("Entro primero aqui en program.cs");
-            builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5000") });
+            builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["baseUrl"]) });
+
+            builder.Logging.SetMinimumLevel(LogLevel.Debug);
             builder.Services.AddSingleton<ILocalStorageService, LocalStorageService>();
             builder.Services.AddTransient<IAccountService, AccountService>();
             builder.Services.AddTransient<IPersonService, PersonService>();

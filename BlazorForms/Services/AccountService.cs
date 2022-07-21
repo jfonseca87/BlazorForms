@@ -3,11 +3,11 @@ using BlazorForms.Extensions;
 using BlazorForms.Models;
 using BlazorForms.Utils;
 using Microsoft.AspNetCore.Components.WebAssembly.Http;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace BlazorForms.Services
@@ -16,19 +16,19 @@ namespace BlazorForms.Services
     {
         private readonly HttpClient _httpClient;
         private readonly IToastService _toastService;
-        private readonly ILocalStorageService _localStorageService;
+        private readonly IConfiguration _configuration;
 
-        public AccountService(HttpClient httpClient, IToastService toastService, ILocalStorageService localStorageService)
+        public AccountService(HttpClient httpClient, IToastService toastService, IConfiguration configuration)
         {
             _httpClient = httpClient;
             _toastService = toastService;
-            _localStorageService = localStorageService;
+            _configuration = configuration;
         }
 
         public async Task<ApiResponse<User>> ValidateUser()
         {
             // create request object and pass windows authentication credentials
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5000/api/account");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{_configuration["baseUrl"]}/api/account");
             request.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 
             // send the request and convert the results to a list
