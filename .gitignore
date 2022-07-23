@@ -3,9 +3,9 @@
 ################################################################################
 
 /.vs/BlazorForms
-/BlazorForms/bin/Debug/net5.0
+/BlazorForms/bin
 /BlazorForms/obj
-/BlazorFormsAPI/bin/Debug/net5.0
+/BlazorFormsAPI/bin
 /BlazorFormsAPI/obj
 /BlazorTests/obj
 /BlazorTests/bin
