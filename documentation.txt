@@ -1,0 +1,4 @@
+https://code-maze.com/blazor-webassembly-forms-form-validation/
+https://www.pragimtech.com/blog/blazor/what-is-blazor/
+https://docs.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-6.0
+https://blazor-university.com/

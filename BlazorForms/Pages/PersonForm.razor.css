@@ -1,0 +1,36 @@
+﻿.form-container {
+    margin: auto;
+    padding: 15px;
+    width: 700px;
+    border: 1px solid black;
+}
+
+.form-custom-row {
+    display: flex;
+    padding: 3px;
+}
+
+.form-survey {
+    padding: 3px;
+}
+
+.form-custom-control {
+    padding: 1px;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: right;
+}
+
+    .form-buttons button {
+        margin-left: 5px;
+    }
+
+.middle-size {
+    width: 50%;
+}
+
+.full-size {
+    width: 100%;
+}
