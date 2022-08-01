@@ -1,13 +1,11 @@
-﻿using BlazorFormsAPI.Models;
-using BlazorFormsAPI.Repositories;
-using BlazorFormsAPI.Utils.JWT;
+﻿using BlazorFormsAuthAPI.Repositories;
+using BlazorFormsAuthAPI.Utils.JWT;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using System.Threading.Tasks;
+using Shared.Models;
 
-namespace BlazorFormsAPI.Controllers
+namespace BlazorFormsAuthAPI.Controllers
 {
     [ApiController]
     [Route("api/account")]

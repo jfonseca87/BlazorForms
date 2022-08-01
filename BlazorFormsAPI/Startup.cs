@@ -1,5 +1,6 @@
 using BlazorFormsAPI.Repositories;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -29,8 +30,7 @@ namespace BlazorFormsAPI
             );
 
             services
-                .AddAuthentication()
-                .AddNegotiate()
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
@@ -51,7 +51,6 @@ namespace BlazorFormsAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BlazorFormsAPI", Version = "v1" });
             });
 
-            services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<IPersonRepository, PersonRepository>();
 
             services.AddCors(conf => conf.AddPolicy("test", settings => 

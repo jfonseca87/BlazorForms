@@ -26,7 +26,7 @@ namespace BlazorFormsAPI.Controllers
         }
 
         [HttpGet("people")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator,User")]
+        [Authorize(Roles = "Administrator,User")]
         public async Task<IActionResult> GetPeople()
         {
             try
@@ -42,7 +42,7 @@ namespace BlazorFormsAPI.Controllers
         }
 
         [HttpGet("people/{id:int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator,User")]
+        [Authorize(Roles = "Administrator,User")]
         public async Task<IActionResult> GetPersonById(int id)
         {
             if (!ModelState.IsValid) 
@@ -63,7 +63,7 @@ namespace BlazorFormsAPI.Controllers
         }
 
         [HttpPost("people")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> AddPerson(Person person)
         {
             try
@@ -79,7 +79,7 @@ namespace BlazorFormsAPI.Controllers
         }
 
         [HttpPut("people")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> UpdatePerson(Person person)
         {
             try
@@ -95,7 +95,7 @@ namespace BlazorFormsAPI.Controllers
         }
 
         [HttpDelete("people/{personId:int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeletePerson(int personId)
         {
             try

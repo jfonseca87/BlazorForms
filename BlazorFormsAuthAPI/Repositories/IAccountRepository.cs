@@ -1,7 +1,6 @@
-﻿using BlazorFormsAPI.Models;
-using System.Threading.Tasks;
+﻿using Shared.Models;
 
-namespace BlazorFormsAPI.Repositories
+namespace BlazorFormsAuthAPI.Repositories
 {
     public interface IAccountRepository
     {

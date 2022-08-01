@@ -28,7 +28,7 @@ namespace BlazorForms.Services
         public async Task<ApiResponse<User>> ValidateUser()
         {
             // create request object and pass windows authentication credentials
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{_configuration["baseUrl"]}/api/account");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{_configuration["baseUrlAuth"]}/api/account");
             request.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 
             // send the request and convert the results to a list

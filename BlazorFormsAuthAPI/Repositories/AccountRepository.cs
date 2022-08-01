@@ -1,10 +1,8 @@
-﻿using BlazorFormsAPI.Models;
-using Dapper;
-using Microsoft.Extensions.Configuration;
+﻿using Dapper;
 using MySql.Data.MySqlClient;
-using System.Threading.Tasks;
+using Shared.Models;
 
-namespace BlazorFormsAPI.Repositories
+namespace BlazorFormsAuthAPI.Repositories
 {
     public class AccountRepository : IAccountRepository
     {

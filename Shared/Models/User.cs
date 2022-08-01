@@ -1,4 +1,4 @@
-﻿namespace BlazorFormsAPI.Models
+﻿namespace Shared.Models
 {
     public class User
     {

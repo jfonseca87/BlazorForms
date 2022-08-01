@@ -7,6 +7,10 @@
 /BlazorForms/obj
 /BlazorFormsAPI/bin
 /BlazorFormsAPI/obj
+/BlazorFormsAuthAPI/bin
+/BlazorFormsAuthAPI/obj
 /BlazorTests/obj
 /BlazorTests/bin
+/Shared/bin
+/Shared/obj
 /.vs/ProjectEvaluation
