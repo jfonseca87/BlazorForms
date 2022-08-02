@@ -3,6 +3,7 @@
 
 @inject IPersonService personSvc
 @inject IToastService toastSvc
+@inject IConfiguration configurationSvc
 @inject NavigationManager navManager
 
 <h3>Person</h3>
@@ -130,13 +131,13 @@
                 : "Person added successfully.";
             toastSvc.ShowSuccess(message);
                 
-            navManager.NavigateTo("/people");
+            navManager.NavigateTo($"{configurationSvc["baseUrlClient"]}/people");
         }
     }
 
     private void Cancel()
     {
-        navManager.NavigateTo("/people");
+        navManager.NavigateTo($"{configurationSvc["baseUrlClient"]}/people");
     }
     
     private void WorkingExperienceHandler(ChangeEventArgs args)

@@ -2,6 +2,7 @@
 using BlazorForms.Extensions;
 using BlazorForms.Models;
 using BlazorForms.Utils;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,16 +17,18 @@ namespace BlazorForms.Services
     {
         private readonly HttpClient _httpClient;
         private readonly IToastService _toastService;
+        private readonly IConfiguration _configuration;
 
-        public PersonService(HttpClient httpClient, IToastService toastService)
+        public PersonService(HttpClient httpClient, IToastService toastService, IConfiguration configuration)
         {
             _httpClient = httpClient;
             _toastService = toastService;
+            _configuration = configuration;
         }
 
         public async Task<ApiResponse<List<Person>>> GetPeople()
         {
-            var response = await _httpClient.GetAsync("api/people");
+            var response = await _httpClient.GetAsync($"{_configuration["baseUrl"]}/api/people");
             var (status, data, errors) = await response.ToClientResponse();
 
             ProcessErrorResponse(status, errors, "getting");
@@ -42,7 +45,7 @@ namespace BlazorForms.Services
 
         public async Task<ApiResponse<Person>> GetPersonById(int id)
         {
-            var response = await _httpClient.GetAsync($"api/people/{id}");
+            var response = await _httpClient.GetAsync($"{_configuration["baseUrl"]}/api/people/{id}");
             var (status, data, errors) = await response.ToClientResponse();
 
             ProcessErrorResponse(status, errors, "getting");
@@ -61,7 +64,7 @@ namespace BlazorForms.Services
         {
             var json = JsonConvert.SerializeObject(person);
             var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync("api/people", content);
+            var response = await _httpClient.PostAsync($"{_configuration["baseUrl"]}/api/people", content);
             var (status, data, errors) = await response.ToClientResponse();
 
             ProcessErrorResponse(status, errors, "ceating");
@@ -78,7 +81,7 @@ namespace BlazorForms.Services
         {
             var json = JsonConvert.SerializeObject(person);
             var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-            var response = await _httpClient.PutAsync("api/people", content);
+            var response = await _httpClient.PutAsync($"{_configuration["baseUrl"]}/api/people", content);
             var (status, data, errors) = await response.ToClientResponse();
 
             ProcessErrorResponse(status, errors, "updating");
@@ -93,7 +96,7 @@ namespace BlazorForms.Services
 
         public async Task<ApiResponse<bool>> DeletePerson(int personId)
         {
-            var response = await _httpClient.DeleteAsync($"api/people/{personId}");
+            var response = await _httpClient.DeleteAsync($"{_configuration["baseUrl"]}/api/people/{personId}");
             var (status, data, errors) = await response.ToClientResponse();
 
             ProcessErrorResponse(status, errors, "deleting");

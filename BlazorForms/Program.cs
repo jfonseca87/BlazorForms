@@ -17,7 +17,7 @@ namespace BlazorForms
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
-            builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["baseUrl"]) });
+            builder.Services.AddSingleton(sp => new HttpClient());
 
             builder.Logging.SetMinimumLevel(LogLevel.Debug);
             builder.Services.AddSingleton<ILocalStorageService, LocalStorageService>();
