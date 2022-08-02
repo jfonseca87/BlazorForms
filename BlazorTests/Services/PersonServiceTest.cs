@@ -2,6 +2,7 @@
 using BlazorForms.Models;
 using BlazorForms.Services;
 using BlazorForms.Utils;
+using Microsoft.Extensions.Configuration;
 using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
@@ -27,7 +28,7 @@ namespace BlazorTests.Services
             _handlerMock = new Mock<HttpMessageHandler>();
             var httpClient = new HttpClient(_handlerMock.Object);
             httpClient.BaseAddress = new Uri("http://localhost:5000");
-            _personService = new PersonService(httpClient, _toastServiceMock.Object);
+            _personService = new PersonService(httpClient, _toastServiceMock.Object, new Mock<IConfiguration>().Object);
         }
 
         [Fact]
